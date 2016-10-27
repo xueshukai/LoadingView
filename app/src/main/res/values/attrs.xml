@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="LoadingView2">
+        <!--点半径-->
+        <attr name="point_radius" format="dimension"/>
+        <!--振动周期-->
+        <attr name="point_circle_time" format="integer"/>
+        <!--点与点之间的距离-->
+        <attr name="point_space" format="dimension"/>
+        <!--点的数量-->
+        <attr name="point_count" format="integer"/>
+        <!--振幅-->
+        <attr name="point_swing" format="dimension"/>
+        <!--每个点开始运动时间的差值 影响最终动画效果-->
+        <attr name="point_diff_time" format="integer"/>
+    </declare-styleable>
+</resources>
