@@ -30,6 +30,8 @@ public class LoadingView2 extends View {
     private RectF rectF;
     private int swing = 20;//振幅
     private int space = 20;//点之间的距离
+    private int pointColor = Color.BLACK;
+    private int left = 0;
 
 
     public LoadingView2(Context context) {
@@ -45,6 +47,7 @@ public class LoadingView2 extends View {
         space = typedArray.getDimensionPixelSize(R.styleable.LoadingView2_point_space , 20);
         pointDiffT = typedArray.getInt(R.styleable.LoadingView2_point_diff_time , 150);
         swing = typedArray.getDimensionPixelSize(R.styleable.LoadingView2_point_swing , 20);
+        pointColor = typedArray.getColor(R.styleable.LoadingView2_point_color , Color.BLACK);
         typedArray.recycle();
         init();
     }
@@ -61,6 +64,7 @@ public class LoadingView2 extends View {
             points.add(new Point());
         }
         rectF = new RectF();
+        paint.setColor(pointColor);
     }
 
 
@@ -69,27 +73,26 @@ public class LoadingView2 extends View {
     }
 
     @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        int pointTotal = radius * 2 * pointCount + space * (pointCount - 1);
+        int measuredWidth = getMeasuredWidth();
+        if (pointTotal > measuredWidth){
+            space = (measuredWidth - radius * 2 * pointCount) / (pointCount-1);
+        }else {
+            left = (measuredWidth - pointTotal) /2;
+        }
+    }
+
+    @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         int w = getHeight() / 2;
-        canvas.drawColor(Color.LTGRAY);
-        paint.setColor(Color.DKGRAY);
-
-        int left = 0;
-
-        int pointTotal = radius * 2 * pointCount + space * (pointCount - 1);
-        if (pointTotal > getWidth()){//修正点间距
-            space = (getWidth() - radius * 2 * pointCount) / (pointCount-1);
-        }else {//
-            left = (getWidth() - pointTotal) /2;
-        }
-
         for (int i = 0; i < points.size(); i++) {
             Point point = points.get(i);
             rectF.set(left + i * space + i * 2*radius, w - radius + point.y, left + i * space + i * 2*radius+2 * radius, w + radius + point.y);
             canvas.drawOval(rectF, paint);
         }
-
         startTransform();
     }
 
@@ -123,10 +126,10 @@ public class LoadingView2 extends View {
     }
 
     private class SineEvaluator implements TypeEvaluator<Object> {
+        float[] floats = new float[pointCount];
 
         @Override
         public Object evaluate(float fraction, Object startValue, Object endValue) {
-            float[] floats = new float[pointCount];
             for (int i = 0; i < pointCount; i++) {
                 floats[i] = swing * (float) Math.sin(2 * Math.PI / t * (fraction * t - pointDiffT * i));
             }

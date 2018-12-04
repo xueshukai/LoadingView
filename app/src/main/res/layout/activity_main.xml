@@ -41,6 +41,7 @@
         app:point_diff_time="150"
         app:point_space="10dp"
         app:point_swing="10dp"
+        app:point_color="#F48FB1"
         app:point_circle_time="1200"
         android:layout_marginTop="20dp"/>
 

@@ -13,5 +13,7 @@
         <attr name="point_swing" format="dimension"/>
         <!--每个点开始运动时间的差值 影响最终动画效果-->
         <attr name="point_diff_time" format="integer"/>
+        <!--点颜色-->
+        <attr name="point_color" format="color"/>
     </declare-styleable>
 </resources>
